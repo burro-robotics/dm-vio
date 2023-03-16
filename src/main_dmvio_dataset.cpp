@@ -58,14 +58,17 @@ std::string gtFile = "";
 std::string source = "";
 std::string imuFile = "";
 
-bool reverse = false;
+namespace main_dmvio
+{
+    int end{100000};
+    bool reverse{false};
+}
+
 int start = 0;
-int end = 100000;
 int maxPreloadImages = 0; // If set we only preload if there are less images to be loade.
 bool useSampleOutput = false;
 
 using namespace dso;
-
 
 dmvio::MainSettings mainSettings;
 dmvio::IMUCalibration imuCalibration;
@@ -104,13 +107,13 @@ void run(ImageFolderReader* reader, IOWrap::PangolinDSOViewer* viewer)
 
 
     int lstart = start;
-    int lend = end;
+    int lend = main_dmvio::end;
     int linc = 1;
-    if(reverse)
+    if(main_dmvio::reverse)
     {
         assert(!setting_useIMU); // Reverse is not supported with IMU data at the moment!
         printf("REVERSE!!!!");
-        lstart = end - 1;
+        lstart = main_dmvio::end - 1;
         if(lstart >= reader->getNumImages())
             lstart = reader->getNumImages() - 1;
         lend = start;
@@ -366,11 +369,11 @@ int main(int argc, char** argv)
     // MainSettings::registerArgs, IMUSettings.h and IMUInitSettings.h
     settingsUtil->registerArg("files", source);
     settingsUtil->registerArg("start", start);
-    settingsUtil->registerArg("end", end);
+    settingsUtil->registerArg("end", main_dmvio::end);
     settingsUtil->registerArg("imuFile", imuFile);
     settingsUtil->registerArg("gtFile", gtFile);
     settingsUtil->registerArg("sampleoutput", useSampleOutput);
-    settingsUtil->registerArg("reverse", reverse);
+    settingsUtil->registerArg("reverse", main_dmvio::reverse);
     settingsUtil->registerArg("use16Bit", use16Bit);
     settingsUtil->registerArg("maxPreloadImages", maxPreloadImages);
 
