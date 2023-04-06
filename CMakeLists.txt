@@ -1,11 +1,9 @@
-SET(PROJECT_NAME DMVIO)
-
-PROJECT(${PROJECT_NAME})
+PROJECT(DMVIO)
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
 
 IF(NOT CMAKE_BUILD_TYPE)
-	set(CMAKE_BUILD_TYPE RelWithDebInfo)
+    set(CMAKE_BUILD_TYPE RelWithDebInfo)
 ENDIF()
 set(BUILD_TYPE RelWithDebInfo)
 
@@ -24,8 +22,8 @@ find_package(realsense2 QUIET)
 
 IF(${Boost_VERSION} GREATER_EQUAL 106500)
     message("Building with stacktrace support.")
-	set(STACKTRACE_LIBRARIES dl)
-	set(STACKTRACE_DEFINES "-DSTACKTRACE -DBOOST_STACKTRACE_USE_ADDR2LINE")
+    set(STACKTRACE_LIBRARIES dl)
+    set(STACKTRACE_DEFINES "-DSTACKTRACE -DBOOST_STACKTRACE_USE_ADDR2LINE")
 ENDIF()
 
 # optional libraries
@@ -47,13 +45,13 @@ set(CMAKE_CXX_FLAGS
     "${SSE_FLAGS}"
 )
 set(CMAKE_CXX_FLAGS_DEBUG
-	"-O2 -g -fno-omit-frame-pointer -DEIGEN_INITIALIZE_MATRICES_WITH_NAN -DDEBUG ${STACKTRACE_DEFINES}"
+    "-O2 -g -fno-omit-frame-pointer -DEIGEN_INITIALIZE_MATRICES_WITH_NAN -DDEBUG ${STACKTRACE_DEFINES}"
 )
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
-	"-O3 -g -fno-omit-frame-pointer ${STACKTRACE_DEFINES}"
+    "-O3 -g -fno-omit-frame-pointer ${STACKTRACE_DEFINES}"
 )
 set(CMAKE_CXX_FLAGS_RELEASE
-	"-O3 -DNDEBUG"
+    "-O3 -DNDEBUG"
 )
 
 set(CMAKE_CXX_STANDARD 14)
@@ -77,48 +75,48 @@ set(dso_SOURCE_FILES
         ${DSO_SOURCE_DIR}/FullSystem/ImmaturePoint.cpp
         ${DSO_SOURCE_DIR}/FullSystem/HessianBlocks.cpp
         ${DSO_SOURCE_DIR}/FullSystem/PixelSelector2.cpp
-		${DSO_SOURCE_DIR}/OptimizationBackend/EnergyFunctional.cpp
-		${DSO_SOURCE_DIR}/OptimizationBackend/AccumulatedTopHessian.cpp
-		${DSO_SOURCE_DIR}/OptimizationBackend/AccumulatedSCHessian.cpp
-		${DSO_SOURCE_DIR}/OptimizationBackend/EnergyFunctionalStructs.cpp
-		${DSO_SOURCE_DIR}/util/settings.cpp
-		${DSO_SOURCE_DIR}/util/Undistort.cpp
-		${DSO_SOURCE_DIR}/util/globalCalib.cpp
-		)
+        ${DSO_SOURCE_DIR}/OptimizationBackend/EnergyFunctional.cpp
+        ${DSO_SOURCE_DIR}/OptimizationBackend/AccumulatedTopHessian.cpp
+        ${DSO_SOURCE_DIR}/OptimizationBackend/AccumulatedSCHessian.cpp
+        ${DSO_SOURCE_DIR}/OptimizationBackend/EnergyFunctionalStructs.cpp
+        ${DSO_SOURCE_DIR}/util/settings.cpp
+        ${DSO_SOURCE_DIR}/util/Undistort.cpp
+        ${DSO_SOURCE_DIR}/util/globalCalib.cpp
+        )
 
 set(dmvio_SOURCE_FILES
-		src/IMU/IMUIntegration.cpp
-		src/GTSAMIntegration/Sim3GTSAM.cpp
+        src/IMU/IMUIntegration.cpp
+        src/GTSAMIntegration/Sim3GTSAM.cpp
         src/IMUInitialization/GravityInitializer.cpp
-		src/IMU/IMUTypes.cpp
-		src/IMU/IMUSettings.cpp
-		src/util/TimeMeasurement.cpp
-		src/util/SettingsUtil.cpp
-		src/GTSAMIntegration/BAGTSAMIntegration.cpp
-		src/IMU/CoarseIMULogic.cpp
-		src/IMU/BAIMULogic.cpp
-		src/GTSAMIntegration/PoseTransformation.cpp
-		src/GTSAMIntegration/Marginalization.cpp
-		src/GTSAMIntegration/PoseTransformationIMU.cpp
-		src/GTSAMIntegration/PoseTransformationFactor.cpp
+        src/IMU/IMUTypes.cpp
+        src/IMU/IMUSettings.cpp
+        src/util/TimeMeasurement.cpp
+        src/util/SettingsUtil.cpp
+        src/GTSAMIntegration/BAGTSAMIntegration.cpp
+        src/IMU/CoarseIMULogic.cpp
+        src/IMU/BAIMULogic.cpp
+        src/GTSAMIntegration/PoseTransformation.cpp
+        src/GTSAMIntegration/Marginalization.cpp
+        src/GTSAMIntegration/PoseTransformationIMU.cpp
+        src/GTSAMIntegration/PoseTransformationFactor.cpp
         src/IMUInitialization/CoarseIMUInitOptimizer.cpp
         src/IMUInitialization/IMUInitializer.cpp
-		src/IMU/IMUUtils.cpp
+        src/IMU/IMUUtils.cpp
         src/IMUInitialization/IMUInitSettings.cpp
-		src/GTSAMIntegration/GTSAMUtils.cpp
-		src/GTSAMIntegration/DelayedMarginalization.cpp
+        src/GTSAMIntegration/GTSAMUtils.cpp
+        src/GTSAMIntegration/DelayedMarginalization.cpp
         src/IMUInitialization/PoseGraphBundleAdjustment.cpp
         src/GTSAMIntegration/FEJValues.cpp
         src/IMUInitialization/IMUInitializerStates.cpp
         src/IMUInitialization/IMUInitializerLogic.cpp
         src/IMUInitialization/IMUInitializerTransitions.cpp
-		src/GTSAMIntegration/AugmentedScatter.cpp
-		src/live/FrameContainer.cpp
-		src/live/IMUInterpolator.cpp
+        src/GTSAMIntegration/AugmentedScatter.cpp
+        src/live/FrameContainer.cpp
+        src/live/IMUInterpolator.cpp
         src/util/MainSettings.cpp
         src/live/FrameSkippingStrategy.cpp
-		src/live/DatasetSaver.cpp
-		)
+        src/live/DatasetSaver.cpp
+        )
 
 
 include_directories(
@@ -133,44 +131,44 @@ include_directories(
 
 # decide if we have pangolin
 if (Pangolin_FOUND)
-	message("--- found PANGOLIN, compiling with pangolin library.")
-	include_directories( ${Pangolin_INCLUDE_DIRS} ) 
-	set(dso_pangolin_SOURCE_FILES
-			${DSO_SOURCE_DIR}/IOWrapper/Pangolin/KeyFrameDisplay.cpp
-			${DSO_SOURCE_DIR}/IOWrapper/Pangolin/PangolinDSOViewer.cpp)
-	set(HAS_PANGOLIN 1)
+    message("--- found PANGOLIN, compiling with pangolin library.")
+    include_directories( ${Pangolin_INCLUDE_DIRS} ) 
+    set(dso_pangolin_SOURCE_FILES
+            ${DSO_SOURCE_DIR}/IOWrapper/Pangolin/KeyFrameDisplay.cpp
+            ${DSO_SOURCE_DIR}/IOWrapper/Pangolin/PangolinDSOViewer.cpp)
+    set(HAS_PANGOLIN 1)
 else ()
-	message("--- could not find PANGOLIN, not compiling with pangolin library.")
-	message("    this means there will be no 3D display / GUI available for dmvio_dataset.")
-	set(dso_pangolin_SOURCE_FILES )
-	set(HAS_PANGOLIN 0)
+    message("--- could not find PANGOLIN, not compiling with pangolin library.")
+    message("    this means there will be no 3D display / GUI available for dmvio_dataset.")
+    set(dso_pangolin_SOURCE_FILES )
+    set(HAS_PANGOLIN 0)
 endif ()
 
 # decide if we have openCV
 if (OpenCV_FOUND)
-	message("--- found OpenCV, compiling with opencv library.")
-	include_directories( ${OpenCV_INCLUDE_DIRS} )
-	set(dso_opencv_SOURCE_FILES
-			${DSO_SOURCE_DIR}/IOWrapper/OpenCV/ImageDisplay_OpenCV.cpp
-			${DSO_SOURCE_DIR}/IOWrapper/OpenCV/ImageRW_OpenCV.cpp)
-	set(HAS_OPENCV 1)
+    message("--- found OpenCV, compiling with opencv library.")
+    include_directories( ${OpenCV_INCLUDE_DIRS} )
+    set(dso_opencv_SOURCE_FILES
+            ${DSO_SOURCE_DIR}/IOWrapper/OpenCV/ImageDisplay_OpenCV.cpp
+            ${DSO_SOURCE_DIR}/IOWrapper/OpenCV/ImageRW_OpenCV.cpp)
+    set(HAS_OPENCV 1)
 else ()
-	message("--- could not find OpenCV, not compiling with opencv library.")
-	message("    this means there will be no image display, and image read / load functionality.")
-	set(dso_opencv_SOURCE_FILES
-			${DSO_SOURCE_DIR}/IOWrapper/ImageDisplay_dummy.cpp
-			${DSO_SOURCE_DIR}/IOWrapper/ImageRW_dummy.cpp)
-	set(HAS_OPENCV 0)
+    message("--- could not find OpenCV, not compiling with opencv library.")
+    message("    this means there will be no image display, and image read / load functionality.")
+    set(dso_opencv_SOURCE_FILES
+            ${DSO_SOURCE_DIR}/IOWrapper/ImageDisplay_dummy.cpp
+            ${DSO_SOURCE_DIR}/IOWrapper/ImageRW_dummy.cpp)
+    set(HAS_OPENCV 0)
 endif ()
 
 # decide if we have ziplib.
 if (LIBZIP_LIBRARY)
-	message("--- found ziplib (${LIBZIP_VERSION}), compiling with zip capability.")
-	add_definitions(-DHAS_ZIPLIB=1)
-	include_directories( ${LIBZIP_INCLUDE_DIR_ZIP} ${LIBZIP_INCLUDE_DIR_ZIPCONF} ) 
+    message("--- found ziplib (${LIBZIP_VERSION}), compiling with zip capability.")
+    add_definitions(-DHAS_ZIPLIB=1)
+    include_directories( ${LIBZIP_INCLUDE_DIR_ZIP} ${LIBZIP_INCLUDE_DIR_ZIPCONF} ) 
 else()
-	message("--- not found ziplib (${LIBZIP_LIBRARY}), compiling without zip capability.")
-	set(LIBZIP_LIBRARY "")
+    message("--- not found ziplib (${LIBZIP_LIBRARY}), compiling without zip capability.")
+    set(LIBZIP_LIBRARY "")
 endif()
 
 # compile main library.
@@ -187,20 +185,20 @@ endif()
 
 # build main executable (only if we have both OpenCV and Pangolin)
 if (OpenCV_FOUND AND Pangolin_FOUND)
-	message("--- compiling dmvio_dataset.")
-	add_executable(dmvio_dataset ${PROJECT_SOURCE_DIR}/src/main_dmvio_dataset.cpp)
-	set(DMVIO_LINKED_LIBRARIES boost_system cxsparse ${BOOST_THREAD_LIBRARY} ${LIBZIP_LIBRARY} ${Pangolin_LIBRARIES} ${OpenCV_LIBS} gtsam ${YAML_CPP_LIBRARIES} ${STACKTRACE_LIBRARIES})
+    message("--- compiling dmvio_dataset.")
+    add_executable(dmvio_dataset ${PROJECT_SOURCE_DIR}/src/main_dmvio_dataset.cpp)
+    set(DMVIO_LINKED_LIBRARIES boost_system cxsparse ${BOOST_THREAD_LIBRARY} ${LIBZIP_LIBRARY} ${Pangolin_LIBRARIES} ${OpenCV_LIBS} gtsam ${YAML_CPP_LIBRARIES} ${STACKTRACE_LIBRARIES})
     target_link_libraries(dmvio_dataset dmvio ${DMVIO_LINKED_LIBRARIES})
 
-	if(realsense2_FOUND)
-		message("--- compiling dmvio_t265.")
-		set(dmvio_t265_SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/live/RealsenseT265.cpp)
-		add_executable(dmvio_t265 ${PROJECT_SOURCE_DIR}/src/main_dmvio_t265.cpp ${dmvio_t265_SOURCE_FILES})
-		target_link_libraries(dmvio_t265 dmvio ${DMVIO_LINKED_LIBRARIES} realsense2::realsense2)
-	endif()
+    if(realsense2_FOUND)
+        message("--- compiling dmvio_t265.")
+        set(dmvio_t265_SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/live/RealsenseT265.cpp)
+        add_executable(dmvio_t265 ${PROJECT_SOURCE_DIR}/src/main_dmvio_t265.cpp ${dmvio_t265_SOURCE_FILES})
+        target_link_libraries(dmvio_t265 dmvio ${DMVIO_LINKED_LIBRARIES} realsense2::realsense2)
+    endif()
 
 else()
-	message("--- not building dmvio_dataset, since either don't have openCV or Pangolin.")
+    message("--- not building dmvio_dataset, since either don't have openCV or Pangolin.")
 endif()
 
 add_subdirectory(test)
